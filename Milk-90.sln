@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Milk-90", "Milk-90\Milk-90.vcxproj", "{7CCD1EE0-9701-4399-8E7E-CE86D71ADD80}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7CCD1EE0-9701-4399-8E7E-CE86D71ADD80}.Debug|x64.ActiveCfg = Debug|x64
+		{7CCD1EE0-9701-4399-8E7E-CE86D71ADD80}.Debug|x64.Build.0 = Debug|x64
+		{7CCD1EE0-9701-4399-8E7E-CE86D71ADD80}.Debug|x86.ActiveCfg = Debug|Win32
+		{7CCD1EE0-9701-4399-8E7E-CE86D71ADD80}.Debug|x86.Build.0 = Debug|Win32
+		{7CCD1EE0-9701-4399-8E7E-CE86D71ADD80}.Release|x64.ActiveCfg = Release|x64
+		{7CCD1EE0-9701-4399-8E7E-CE86D71ADD80}.Release|x64.Build.0 = Release|x64
+		{7CCD1EE0-9701-4399-8E7E-CE86D71ADD80}.Release|x86.ActiveCfg = Release|Win32
+		{7CCD1EE0-9701-4399-8E7E-CE86D71ADD80}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90D6663B-09E4-4A3E-A2B3-BF203DC724A2}
+	EndGlobalSection
+EndGlobal
