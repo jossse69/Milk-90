@@ -142,3 +142,69 @@ void Renderer::DrawLine(int x1, int y1, int x2, int y2, int colorIndex) {
         if (e2 <= dx) { err += dx; y1 += sy; }
     }
 }
+
+void Renderer::DrawRect(int x, int y, int width, int height, int colorIndex, bool filled) {
+
+	// Draw a rectangle, with fill or not
+    if (filled) {
+        for (int i = y; i < y + height; ++i) {
+            for (int j = x; j < x + width; ++j) {
+                DrawPixel(j, i, colorIndex); // Use existing method
+            }
+        }
+    }
+    else {
+        // Draw the outline
+        for (int i = x; i < x + width; ++i) {
+            DrawPixel(i, y, colorIndex);
+            DrawPixel(i, y + height - 1, colorIndex);
+        }
+        for (int i = y; i < y + height; ++i) {
+            DrawPixel(x, i, colorIndex);
+            DrawPixel(x + width - 1, i, colorIndex);
+        }
+    }
+}
+
+void Renderer::DrawCircle(int centerX, int centerY, int radius, int colorIndex, bool filled) {
+    int x = radius - 1;
+    int y = 0;
+    int dx = 1;
+    int dy = 1;
+    int err = dx - (radius << 1);
+
+    while (x >= y) {
+        if (filled) {
+            // Draw vertical lines for a filled circle
+            for (int i = centerX - y; i <= centerX + y; ++i) {
+                DrawPixel(i, centerY + x, colorIndex);
+                DrawPixel(i, centerY - x, colorIndex);
+            }
+            for (int i = centerX - x; i <= centerX + x; ++i) {
+                DrawPixel(i, centerY + y, colorIndex);
+                DrawPixel(i, centerY - y, colorIndex);
+            }
+        }
+        else {
+            // Draw points for an outlined circle
+			DrawPixel(centerX + x, centerY + y, colorIndex);
+			DrawPixel(centerX - x, centerY + y, colorIndex);
+			DrawPixel(centerX + x, centerY - y, colorIndex);
+			DrawPixel(centerX - x, centerY - y, colorIndex);
+			DrawPixel(centerX + y, centerY + x, colorIndex);
+			DrawPixel(centerX - y, centerY + x, colorIndex);
+			DrawPixel(centerX + y, centerY - x, colorIndex);
+			DrawPixel(centerX - y, centerY - x, colorIndex);
+		}
+        if (err <= 0) {
+            y++;
+            err += dy;
+            dy += 2;
+        }
+        if (err > 0) {
+            x--;
+            dx += 2;
+            err += dx - (radius << 1);
+        }
+    }
+}

@@ -19,6 +19,10 @@ public:
     void DrawPixel(int x, int y, int colorIndex);
     void DrawLine(int x1, int y1, int x2, int y2, int colorIndex);
 
+    void DrawRect(int x, int y, int width, int height, int colorIndex, bool filled = true);
+
+    void DrawCircle(int centerX, int centerY, int radius, int colorIndex, bool filled = true);
+
 
 
 private:
