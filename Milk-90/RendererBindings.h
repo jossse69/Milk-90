@@ -4,6 +4,7 @@
 
 #include "Renderer.h"
 #include <lua.hpp>
+#include "SpriteSheet.h"
 
 class RendererBindings {
 public:
@@ -12,7 +13,7 @@ public:
 
 private:
     static Renderer* renderer;
-
+    static SpriteSheet* spriteSheet;
 
     // Lua-callable function
     static int ClearScreen(lua_State* L);
@@ -20,7 +21,7 @@ private:
     static int DrawLine(lua_State* L);
 	static int DrawRect(lua_State* L);
 	static int DrawCircle(lua_State* L);
-
+	static int DrawSprite(lua_State* L);
 };
 
 #endif // RENDERER_BINDINGS_H

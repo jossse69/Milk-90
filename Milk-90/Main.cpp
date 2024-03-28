@@ -5,7 +5,9 @@
 #include "LuaIntegration.h"
 #include "RendererBindings.h"
 #include "InputBindings.h"
-
+#include "Sprite.h"
+#include "SDL_image.h"
+#include "SpriteSheet.h"
 int main(int argc, char* argv[]) {
     // Window dimensions (double of the original res)
     const int windowWidth = 510;
@@ -19,6 +21,8 @@ int main(int argc, char* argv[]) {
 		std::cout << "SDL could not initialize! SDL Error: " << SDL_GetError() << std::endl;
 		return 1;
 	}
+    
+
     
     // Create the renderer
     Renderer renderer(windowWidth, windowHeight, "Milk-90", gridWidth, gridHeight);
@@ -49,8 +53,20 @@ int main(int argc, char* argv[]) {
 
     Uint32 lastTime = SDL_GetTicks(), currentTime, deltaTime;
 
+    // Example sprite: A simple arrow pointing up
+    Sprite arrowSprite(5, 3, {
+        -1, -1,  1, -1, -1,
+        -1,  1,  1,  1, -1,
+         1,  1,  1,  1,  1
+        });
 
-    lua.ExecuteScript("test_script.lua");
+
+    // load the sprite sheet of the project
+	SpriteSheet spriteSheet;
+    spriteSheet.LoadFromFile("project/sprites.png", renderer.GetSDLRenderer());
+
+
+    lua.ExecuteScript("project/main.lua");
  
     // While application is running
     while (!quit) {
@@ -100,6 +116,9 @@ int main(int argc, char* argv[]) {
             // Pop the non-function value from the stack
             lua_pop(lua.GetLuaState(), 1);
         }
+
+        renderer.DrawSprite(50, 50, arrowSprite); // Draw the sprite at position (50, 50)
+
         // Render the grid to the texture and present it
         renderer.RenderGrid(gridWidth, gridHeight);
         renderer.Present();
