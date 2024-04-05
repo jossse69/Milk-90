@@ -8,7 +8,7 @@
 
 class RendererBindings {
 public:
-    static void Bind(lua_State* L, Renderer* renderer);
+    static void Bind(lua_State* L, Renderer* renderer, SpriteSheet* sheet);
 
 
 private:

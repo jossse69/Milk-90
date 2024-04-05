@@ -6,8 +6,10 @@
 Renderer* RendererBindings::renderer = nullptr;
 SpriteSheet* RendererBindings::spriteSheet = nullptr;
 
-void RendererBindings::Bind(lua_State* L, Renderer* renderer) {
+void RendererBindings::Bind(lua_State* L, Renderer* renderer, SpriteSheet* sheet) {
     RendererBindings::renderer = renderer;
+	RendererBindings::spriteSheet = sheet;
+
 
     lua_register(L, "clearScreen", ClearScreen);
     lua_register(L, "drawPixel", DrawPixel);
@@ -65,17 +67,18 @@ int RendererBindings::DrawCircle(lua_State* L) {
     return 0; // Number of return values
 }
 
-int RendererBindings::DrawSprite(lua_State* L)
-{
+int RendererBindings::DrawSprite(lua_State* L) {
     int x = luaL_checknumber(L, 1);
     int y = luaL_checknumber(L, 2);
     int spriteIndex = luaL_checknumber(L, 3);
+    bool flipHorizontally = lua_isboolean(L, 4) ? lua_toboolean(L, 4) : false;
+    bool flipVertically = lua_isboolean(L, 5) ? lua_toboolean(L, 5) : false;
 
     int spriteX = (spriteIndex % 32) * 8; // Column * sprite width
     int spriteY = (spriteIndex / 32) * 8; // Row * sprite height
 
     Sprite sprite = spriteSheet->CreateSprite(spriteX, spriteY, 8, 8);
-    renderer->DrawSprite(x, y, sprite); // Assuming renderer is accessible and has a DrawSprite method
-	return 0; 
+    renderer->DrawSprite(x, y, sprite, flipHorizontally, flipVertically);
+    return 0;
 }
 

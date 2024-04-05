@@ -40,7 +40,8 @@ public:
     void DrawLine(int x1, int y1, int x2, int y2, int colorIndex);
     void DrawRect(int x, int y, int width, int height, int colorIndex, bool filled = true);
     void DrawCircle(int centerX, int centerY, int radius, int colorIndex, bool filled = true);
-    void DrawSprite(int x, int y, const Sprite& sprite);
+    void DrawSprite(int x, int y, const Sprite& sprite, bool flipHorizontally = false, bool flipVertically = false);
+
 
 
 

@@ -191,10 +191,14 @@ void Renderer::DrawCircle(int centerX, int centerY, int radius, int colorIndex, 
     }
 }
 
-void Renderer::DrawSprite(int x, int y, const Sprite& sprite) {
+void Renderer::DrawSprite(int x, int y, const Sprite& sprite, bool flipHorizontally, bool flipVertically) {
     for (int spriteY = 0; spriteY < sprite.height; ++spriteY) {
         for (int spriteX = 0; spriteX < sprite.width; ++spriteX) {
-            int colorIndex = sprite.GetPixel(spriteX, spriteY);
+            // Determine the source pixel based on flip flags
+            int srcX = flipHorizontally ? (sprite.width - 1 - spriteX) : spriteX;
+            int srcY = flipVertically ? (sprite.height - 1 - spriteY) : spriteY;
+
+            int colorIndex = sprite.GetPixel(srcX, srcY);
             if (colorIndex != -1) { // -1 is transparent
                 DrawPixel(x + spriteX, y + spriteY, colorIndex);
             }

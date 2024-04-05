@@ -27,26 +27,17 @@ int RGBToPaletteIndex(Uint8 r, Uint8 g, Uint8 b, Uint16 a) {
     return closestIndex;
 }
 
-SpriteSheet::SpriteSheet()
-{
+SpriteSheet::SpriteSheet() {
     sheetHeight = 255;
-	sheetWidth = 255;
+    sheetWidth = 255;
+    pixels.resize(sheetWidth * sheetHeight, 0); // Initialize pixels with zeros
 }
 
 bool SpriteSheet::LoadFromFile(const std::string& filePath, SDL_Renderer* renderer) {
-
-    // Initialize SDL_image
-    int imgFlags = IMG_INIT_PNG;
-    if (!(IMG_Init(imgFlags) & imgFlags)) {
-        std::cout << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << std::endl;
-        return 1;
-    }
-
     // Load the image
     SDL_Surface* surface = IMG_Load(filePath.c_str());
     if (!surface) {
         std::cerr << "Failed to load sprite sheet: " << IMG_GetError() << std::endl;
-        IMG_Quit();
         return false;
     }
 
@@ -55,27 +46,28 @@ bool SpriteSheet::LoadFromFile(const std::string& filePath, SDL_Renderer* render
     SDL_FreeSurface(surface); // Free the original surface
     if (!formattedSurface) {
         std::cerr << "Failed to convert sprite sheet to proper format." << std::endl;
-        IMG_Quit();
         return false;
     }
 
     // Process the pixels
-    Uint32* pixels = static_cast<Uint32*>(formattedSurface->pixels);
+    Uint32* pixelsData = static_cast<Uint32*>(formattedSurface->pixels);
+    this->pixels.clear(); // Clear existing pixels in the sprite sheet
     for (int i = 0; i < formattedSurface->w * formattedSurface->h; ++i) {
-        Uint32 pixel = pixels[i];
+        Uint32 pixel = pixelsData[i];
         Uint8 r, g, b, a;
-		SDL_GetRGBA(pixel, formattedSurface->format, &r, &g, &b, &a);
+        SDL_GetRGBA(pixel, formattedSurface->format, &r, &g, &b, &a);
         int colorIndex = RGBToPaletteIndex(r, g, b, a);
         this->pixels.push_back(colorIndex);
     }
 
-    SDL_FreeSurface(formattedSurface);
-    IMG_Quit(); // Quit SDL_image
+    // Set the actual width and height of the sprite sheet
+    sheetWidth = formattedSurface->w;
+    sheetHeight = formattedSurface->h;
 
-    sheetWidth = 255; // Assuming based on your setup
-    sheetHeight = 255; // Assuming based on your setup
+    SDL_FreeSurface(formattedSurface);
     return true;
 }
+
 
 Sprite SpriteSheet::CreateSprite(int x, int y, int width, int height) {
     std::vector<int> spritePixels(width * height);

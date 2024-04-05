@@ -22,7 +22,11 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
     
-
+    int imgFlags = IMG_INIT_PNG;
+    if (!(IMG_Init(imgFlags) & imgFlags)) {
+        std::cout << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << std::endl;
+        return 1;
+    }
     
     // Create the renderer
     Renderer renderer(windowWidth, windowHeight, "Milk-90", gridWidth, gridHeight);
@@ -47,27 +51,39 @@ int main(int argc, char* argv[]) {
 
     InputManager inputManager;
 
+    // load the sprite sheet of the project
+    SpriteSheet* spriteSheet = new SpriteSheet();
+    if (!spriteSheet->LoadFromFile("project/sprites.png", renderer.GetSDLRenderer()))
+    {
+        std::cout << "Sprite sheet not loaded!" << std::endl;
+    }
+
     LuaIntegration lua;
     InputBindings::Bind(lua.GetLuaState(), &inputManager);
-    RendererBindings::Bind(lua.GetLuaState(), &renderer);
+    RendererBindings::Bind(lua.GetLuaState(), &renderer, spriteSheet);
 
     Uint32 lastTime = SDL_GetTicks(), currentTime, deltaTime;
 
-    // Example sprite: A simple arrow pointing up
-    Sprite arrowSprite(5, 3, {
-        -1, -1,  1, -1, -1,
-        -1,  1,  1,  1, -1,
-         1,  1,  1,  1,  1
-        });
 
-
-    // load the sprite sheet of the project
-	SpriteSheet spriteSheet;
-    spriteSheet.LoadFromFile("project/sprites.png", renderer.GetSDLRenderer());
 
 
     lua.ExecuteScript("project/main.lua");
- 
+
+
+	// call the 'load' function
+    lua_getglobal(lua.GetLuaState(), "load");
+    if (lua_isfunction(lua.GetLuaState(), -1))
+    {
+        if (lua_pcall(lua.GetLuaState(), 0, 0, 0) != LUA_OK) {
+            std::cerr << "Error calling load: " << lua_tostring(lua.GetLuaState(), -1) << std::endl;
+        }
+    }
+    else {
+        // Pop the non-function value from the stack
+        lua_pop(lua.GetLuaState(), 1);
+    }
+
+
     // While application is running
     while (!quit) {
         // Handle events
@@ -117,7 +133,6 @@ int main(int argc, char* argv[]) {
             lua_pop(lua.GetLuaState(), 1);
         }
 
-        renderer.DrawSprite(50, 50, arrowSprite); // Draw the sprite at position (50, 50)
 
         // Render the grid to the texture and present it
         renderer.RenderGrid(gridWidth, gridHeight);
@@ -132,6 +147,8 @@ int main(int argc, char* argv[]) {
         }
 
     }
+
+    IMG_Quit(); // Quit SDL_image
 
     return 0;
 }
