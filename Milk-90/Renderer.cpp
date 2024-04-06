@@ -1,10 +1,16 @@
-// Renderer.cpp
+﻿// Renderer.cpp
 #include "Renderer.h"
 #include <iostream>
 #include <vector>
 #include "Sprite.h"
+#include <unordered_map>
+#include <string>
+#include <vector>
+#include <codecvt>
+#include <locale>
 
 const int Renderer::PALETTE_SIZE = sizeof(Renderer::PALETTE) / sizeof(SDL_Color);
+
 
 Renderer::Renderer(int width, int height, const char* windowTitle, int gridwidth, int gridheight) {
 

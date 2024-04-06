@@ -58,9 +58,16 @@ int main(int argc, char* argv[]) {
         std::cout << "Sprite sheet not loaded!" << std::endl;
     }
 
+    // load the sprite sheet of the font too
+	SpriteSheet* fontSheet = new SpriteSheet();
+	if (!fontSheet->LoadFromFile("assets/fonts/zaratustramsx.png", renderer.GetSDLRenderer()))
+	{
+		std::cout << "Font sheet not loaded!" << std::endl;
+	}
+
     LuaIntegration lua;
     InputBindings::Bind(lua.GetLuaState(), &inputManager);
-    RendererBindings::Bind(lua.GetLuaState(), &renderer, spriteSheet);
+    RendererBindings::Bind(lua.GetLuaState(), &renderer, spriteSheet, fontSheet);
 
     Uint32 lastTime = SDL_GetTicks(), currentTime, deltaTime;
 

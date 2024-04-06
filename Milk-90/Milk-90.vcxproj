@@ -114,6 +114,9 @@
       <Version>
       </Version>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /I /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -135,6 +138,9 @@
       <Version>
       </Version>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /I /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="InputBindings.cpp" />

@@ -8,12 +8,13 @@
 
 class RendererBindings {
 public:
-    static void Bind(lua_State* L, Renderer* renderer, SpriteSheet* sheet);
+    static void Bind(lua_State* L, Renderer* renderer, SpriteSheet* sheet, SpriteSheet* font);
 
 
 private:
     static Renderer* renderer;
     static SpriteSheet* spriteSheet;
+    static SpriteSheet* fontSheet;
 
     // Lua-callable function
     static int ClearScreen(lua_State* L);
@@ -22,6 +23,7 @@ private:
 	static int DrawRect(lua_State* L);
 	static int DrawCircle(lua_State* L);
 	static int DrawSprite(lua_State* L);
+    static int DrawText(lua_State* L);
 };
 
 #endif // RENDERER_BINDINGS_H
